@@ -65,7 +65,7 @@ export class BlockchainService {
     return proof;
   }
 
-  public hash(block: IBlock) {
+  public hash(block: any) {
     const blockString = JSON.stringify(block);
     const hash = crypto
       .createHmac(process.env.HASH_TYPE, process.env.CRYPTO_SECRET)
@@ -75,7 +75,7 @@ export class BlockchainService {
     return hash;
   }
 
-  public getChain(): any {
+  public getChain() {
     return this.chain;
   }
 

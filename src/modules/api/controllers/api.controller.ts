@@ -10,9 +10,28 @@ export class ApiController {
 
   @Get('/')
   async getBlockchain() {
-    const data = this.blockchainService.getChain();
+    const data: any = this.blockchainService.getChain();
 
     return { success: true, data };
+  }
+
+  @Post('/mine')
+  async mine() {
+    const lastBlock = this.blockchainService.lastBlock();
+    const lastProof = lastBlock.proof;
+    const proof = this.blockchainService.proofOfWork(lastProof);
+
+    // Create reward transaction
+    this.blockchainService.newTransaction({
+      sender: '0',
+      recipient: process.env.NODE_ENV,
+      amount: 1,
+    });
+
+    const previousHash = this.blockchainService.hash(lastProof);
+    const newBlock: any = this.blockchainService.newBlock(proof, previousHash);
+
+    return { success: true, data: newBlock };
   }
 
   @Post('/')
