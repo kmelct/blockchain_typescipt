@@ -4,6 +4,9 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 // Services
 import { BlockchainService } from '../../blockchain';
 
+// Dto
+import { NewTransaction } from '../dto';
+
 @Controller('blockchain')
 export class ApiController {
   constructor(private readonly blockchainService: BlockchainService) {}
@@ -35,7 +38,7 @@ export class ApiController {
   }
 
   @Post('/')
-  async newTransaction(@Body() body) {
+  async newTransaction(@Body() body: NewTransaction) {
     const { sender, recipient, amount } = body;
 
     const index = this.blockchainService.newTransaction({
