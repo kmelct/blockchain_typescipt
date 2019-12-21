@@ -1,6 +1,9 @@
 // Core
 import { Injectable } from '@nestjs/common';
 
+// Utils
+import * as crypto from 'crypto';
+
 interface ITransaction {
   sender: string;
   recipient: string;
@@ -42,7 +45,15 @@ export class BlockchainService {
     return this.lastBlock().index;
   }
 
-  public hash(block: IBlock) {}
+  public hash(block: IBlock) {
+    const blockString = JSON.stringify(block);
+    const hash = crypto
+      .createHmac(process.env.HASH_TYPE, process.env.CRYPTO_SECRET)
+      .update(blockString)
+      .digest('hex');
+
+    return hash;
+  }
 
   public lastBlock() {
     const length = this.chain.length;
