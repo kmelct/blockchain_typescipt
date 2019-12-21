@@ -75,6 +75,10 @@ export class BlockchainService {
     return hash;
   }
 
+  public getChain(): any {
+    return this.chain;
+  }
+
   public lastBlock() {
     const length = this.chain.length;
     return this.chain[length - 1];
